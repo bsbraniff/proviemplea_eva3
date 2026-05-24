@@ -1,58 +1,288 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ProviEmplea EVA3
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Integrantes
 
-## About Laravel
+* Barbara Santa Maria
+* Elizabeth Pizarro Lara 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Repositorio:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+https://github.com/bsbraniff/proviemplea_eva3
 
-## Learning Laravel
+---
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Índice
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Descripción
+- Objetivos
+- Stack Tecnológico
+- Arquitectura
+- Configuración
+- CRUD
+- Swagger
+- Pruebas
+- Errores
+- Optimización
+- GitHub
+- Conclusión
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
-## Agentic Development
+# Descripción del Proyecto
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+ProviEmplea es una plataforma digital orientada a la búsqueda inversa de empleo, donde las empresas pueden encontrar candidatos según sus habilidades, experiencia laboral y certificaciones.
+
+El objetivo principal de este proyecto fue desarrollar un backend preliminar utilizando Laravel, PHP, MySQL y Docker, implementando operaciones CRUD completas para la administración de clientes mediante una API REST.
+
+Además, se desarrolló documentación técnica utilizando Swagger/OpenAPI para describir cada endpoint implementado en el sistema.
+
+---
+
+# Objetivos  
+
+* Diseñar operaciones CRUD utilizando el framework Laravel.
+* Implementar endpoints funcionales para manipular datos.
+* Utilizar Docker para la ejecución del entorno de desarrollo.
+* Crear documentación OpenAPI mediante Swagger.
+* Probar y depurar errores relacionados con la API y la base de datos.
+* Utilizar GitHub para el control de versiones del proyecto.
+
+---
+
+# Stack Tecnológico Utilizado
+
+| Tecnología        | Descripción                                      |
+| ----------------- | ------------------------------------------------ |
+| PHP               | Lenguaje principal del backend                   |
+| Laravel           | Framework utilizado para el desarrollo de la API |
+| MySQL             | Sistema de gestión de base de datos              |
+| Docker            | Contenedorización del proyecto                   |
+| Swagger / OpenAPI | Documentación de endpoints                       |
+| Git y GitHub      | Control de versiones                             |
+| Postman           | Pruebas de endpoints                             |
+
+---
+
+# Arquitectura del Proyecto
+
+El proyecto fue desarrollado siguiendo una arquitectura basada en API REST utilizando Laravel como framework principal.
+
+Se implementó una estructura MVC (Modelo - Vista - Controlador), utilizando:
+
+* Modelos Eloquent para la manipulación de datos.
+* Controladores para la lógica CRUD.
+* Migraciones para la creación de tablas.
+* Rutas API para exponer los endpoints.
+
+---
+
+# Configuración del Entorno
+
+## Requisitos
+
+* Docker Desktop
+* Git
+* Visual Studio Code
+* Postman
+
+---
+
+# Ejecución del Proyecto
+
+## 1. Levantar contenedores Docker
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+docker compose up -d
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## 2. Ejecutar migraciones
 
-## Contributing
+```bash
+docker compose exec app php artisan migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 3. Verificar contenedores
 
-## Code of Conduct
+```bash
+docker ps
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+# Funcionalidades Implementadas
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Se desarrolló un CRUD completo para la entidad Clientes.
 
-## License
+Las funcionalidades implementadas son:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* Crear clientes
+* Listar clientes
+* Buscar clientes por ID
+* Actualizar clientes
+* Eliminar clientes
+
+---
+
+# Modelo de Datos
+
+La tabla `clientes` contiene los siguientes campos:
+
+| Campo      | Tipo      |
+| ---------- | --------- |
+| id         | bigint    |
+| nombre     | varchar   |
+| apellido   | varchar   |
+| correo     | varchar   |
+| telefono   | varchar   |
+| created_at | timestamp |
+| updated_at | timestamp |
+
+---
+
+# Endpoints Implementados
+
+| Método | Endpoint           | Descripción                |
+| ------ | ------------------ | -------------------------- |
+| GET    | /api/clientes      | Obtener todos los clientes |
+| POST   | /api/clientes      | Crear cliente              |
+| GET    | /api/clientes/{id} | Obtener cliente por ID     |
+| PUT    | /api/clientes/{id} | Actualizar cliente         |
+| DELETE | /api/clientes/{id} | Eliminar cliente           |
+
+---
+
+# Ejemplo JSON de Creación
+
+```json
+{
+  "nombre": "Barbara",
+  "apellido": "Santa Maria",
+  "correo": "barbara@test.com",
+  "telefono": "123456789"
+}
+```
+
+---
+
+# Documentación Swagger
+
+La documentaciónfue desarrollada utilizando el estándar Swagger 3.0.
+
+OpenAPI puede visualizarse utilizando:
+
+https://editor.swagger.io/
+
+Copiando el contenido del archivo `swagger.yaml`.
+
+Se documentaron:
+
+- Parámetros de entrada
+- Respuestas HTTP
+- Ejemplos JSON
+- Códigos de error
+- Descripción de endpoints
+- Tipos de datos
+
+Swagger facilita la validación y pruebas automáticas de la API REST desarrollada.
+
+
+---
+
+# Validaciones y Pruebas
+
+Durante el desarrollo se realizaron pruebas funcionales utilizando Postman y Swagger UI.
+
+Se probaron los siguientes escenarios:
+
+- Inserción correcta de clientes
+- Consulta de registros
+- Actualización de datos
+- Eliminación de registros
+- Validación de errores
+- Respuestas HTTP
+
+Códigos verificados:
+
+- 200 OK
+- 201 Created
+- 404 Not Found
+- 500 Internal Server Error
+
+
+# Depuración de Errores
+
+Durante el desarrollo se identificaron y corrigieron distintos errores relacionados con:
+
+* Conexión Docker
+* Configuración de Laravel
+* Migraciones
+* Columnas inexistentes en MySQL
+* Tabla sessions no encontrada
+* Configuración de rutas API
+* Errores 500 Internal Server Error
+
+
+
+# Problemas Detectados y Soluciones
+
+## Error tabla sessions
+
+Error detectado:
+```bash
+Table 'proviemplea.sessions' doesn't exist
+
+```
+
+Solución aplicada:
+- Reconfiguración de sesiones
+- Ejecución correcta de migraciones
+
+La depuración permitió asegurar el correcto funcionamiento del CRUD.
+
+
+---
+
+# Optimización y Buenas Prácticas
+
+Se aplicaron buenas prácticas utilizando:
+
+* Framework Laravel
+* Arquitectura MVC
+* Migraciones estructuradas
+* Uso de Eloquent ORM
+* Docker para entorno aislado
+* Separación de responsabilidades
+* Versionamiento con GitHub
+
+---
+
+# Control de Versiones
+
+El proyecto fue administrado utilizando Git y GitHub para mantener respaldo y control de cambios del código fuente.
+
+# Evidencias de Pruebas
+
+Se adjunta carpeta `Pruebas postman` con evidencias de ejecución de los endpoints en Postman.
+
+También se incluye la colección de Postman para facilitar la verificación de la API:
+
+- `postman_collection.json`
+
+Las pruebas realizadas incluyen:
+- GET clientes
+- POST clientes
+- PUT clientes
+- DELETE clientes
+- Verificación en Docker
+- Documentación Swagger
+
+---
+
+# Conclusión
+
+El desarrollo del backend de ProviEmplea permitió implementar correctamente operaciones CRUD mediante Laravel y MySQL utilizando Docker como entorno de desarrollo.
+
+Además, se logró documentar la API utilizando Swagger/OpenAPI, permitiendo visualizar y comprender cada endpoint implementado.
+
+El proyecto cumple con los requerimientos solicitados en la evaluación, integrando desarrollo backend, documentación técnica, control de versiones y pruebas funcionales.
