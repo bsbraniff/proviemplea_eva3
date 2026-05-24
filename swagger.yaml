@@ -11,30 +11,47 @@ servers:
 paths:
 
   /clientes:
-  
+
     get:
       summary: Obtener todos los clientes
+
       responses:
         '200':
           description: Lista de clientes obtenida correctamente
 
+        '500':
+          description: Error interno del servidor
+
     post:
       summary: Crear un nuevo cliente
+
       requestBody:
         required: true
+
         content:
           application/json:
+
             schema:
               type: object
+
               properties:
                 nombre:
                   type: string
+
                 apellido:
                   type: string
+
                 correo:
                   type: string
+
                 telefono:
                   type: string
+
+              required:
+                - nombre
+                - apellido
+                - correo
+                - telefono
 
             example:
               nombre: Barbara
@@ -45,6 +62,9 @@ paths:
       responses:
         '201':
           description: Cliente creado correctamente
+
+        '422':
+          description: Error de validación
 
         '500':
           description: Error interno del servidor
@@ -58,6 +78,7 @@ paths:
         - name: id
           in: path
           required: true
+
           schema:
             type: integer
 
@@ -68,6 +89,9 @@ paths:
         '404':
           description: Cliente no encontrado
 
+        '500':
+          description: Error interno del servidor
+
     put:
       summary: Actualizar cliente
 
@@ -75,24 +99,37 @@ paths:
         - name: id
           in: path
           required: true
+
           schema:
             type: integer
 
       requestBody:
         required: true
+
         content:
           application/json:
+
             schema:
               type: object
+
               properties:
                 nombre:
                   type: string
+
                 apellido:
                   type: string
+
                 correo:
                   type: string
+
                 telefono:
                   type: string
+
+              required:
+                - nombre
+                - apellido
+                - correo
+                - telefono
 
             example:
               nombre: Barbara Actualizada
@@ -107,6 +144,12 @@ paths:
         '404':
           description: Cliente no encontrado
 
+        '422':
+          description: Error de validación
+
+        '500':
+          description: Error interno del servidor
+
     delete:
       summary: Eliminar cliente
 
@@ -114,6 +157,7 @@ paths:
         - name: id
           in: path
           required: true
+
           schema:
             type: integer
 
@@ -123,3 +167,6 @@ paths:
 
         '404':
           description: Cliente no encontrado
+
+        '500':
+          description: Error interno del servidor

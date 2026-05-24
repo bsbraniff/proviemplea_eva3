@@ -16,7 +16,15 @@ class ClienteController extends Controller
     // Crear cliente
     public function store(Request $request)
     {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'correo' => 'required|email|unique:clientes,correo',
+            'telefono' => 'required|string|max:20'
+        ]);
+
         $cliente = Cliente::create($request->all());
+
         return response()->json($cliente, 201);
     }
 
@@ -29,7 +37,15 @@ class ClienteController extends Controller
     // Actualizar cliente
     public function update(Request $request, $id)
     {
-        $cliente = Cliente::find($id);
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'correo' => 'required|email|unique:clientes,correo,' . $id,
+            'telefono' => 'required|string|max:20'
+        ]);
+
+        $cliente = Cliente::findOrFail($id);
+
         $cliente->update($request->all());
 
         return response()->json($cliente);
