@@ -1,0 +1,172 @@
+openapi: 3.0.0
+
+info:
+  title: API ProviEmplea
+  description: API CRUD de clientes para la plataforma ProviEmplea
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000/api
+
+paths:
+
+  /clientes:
+
+    get:
+      summary: Obtener todos los clientes
+
+      responses:
+        '200':
+          description: Lista de clientes obtenida correctamente
+
+        '500':
+          description: Error interno del servidor
+
+    post:
+      summary: Crear un nuevo cliente
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+
+            schema:
+              type: object
+
+              properties:
+                nombre:
+                  type: string
+
+                apellido:
+                  type: string
+
+                correo:
+                  type: string
+
+                telefono:
+                  type: string
+
+              required:
+                - nombre
+                - apellido
+                - correo
+                - telefono
+
+            example:
+              nombre: Barbara
+              apellido: Santa Maria
+              correo: barbara@test.com
+              telefono: "123456789"
+
+      responses:
+        '201':
+          description: Cliente creado correctamente
+
+        '422':
+          description: Error de validación
+
+        '500':
+          description: Error interno del servidor
+
+  /clientes/{id}:
+
+    get:
+      summary: Obtener cliente por ID
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Cliente encontrado
+
+        '404':
+          description: Cliente no encontrado
+
+        '500':
+          description: Error interno del servidor
+
+    put:
+      summary: Actualizar cliente
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+
+            schema:
+              type: object
+
+              properties:
+                nombre:
+                  type: string
+
+                apellido:
+                  type: string
+
+                correo:
+                  type: string
+
+                telefono:
+                  type: string
+
+              required:
+                - nombre
+                - apellido
+                - correo
+                - telefono
+
+            example:
+              nombre: Barbara Actualizada
+              apellido: Santa Maria
+              correo: nuevo@test.com
+              telefono: "999999999"
+
+      responses:
+        '200':
+          description: Cliente actualizado
+
+        '404':
+          description: Cliente no encontrado
+
+        '422':
+          description: Error de validación
+
+        '500':
+          description: Error interno del servidor
+
+    delete:
+      summary: Eliminar cliente
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Cliente eliminado
+
+        '404':
+          description: Cliente no encontrado
+
+        '500':
+          description: Error interno del servidor
