@@ -4,58 +4,122 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use Illuminate\Support\Facades\Cache;
 
 class ClienteController extends Controller
 {
-    // Listar todos los clientes
+
+    // Obtener todos los clientes
     public function index()
     {
-        return Cliente::all();
+        $clientes = Cache::remember('clientes', 60, function () {
+            return Cliente::paginate(10);
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Clientes obtenidos correctamente',
+            'data' => $clientes
+        ], 200);
     }
 
     // Crear cliente
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'correo' => 'required|email|unique:clientes,correo',
             'telefono' => 'required|string|max:20'
         ]);
 
-        $cliente = Cliente::create($request->all());
+        $cliente = Cliente::create($validated);
 
-        return response()->json($cliente, 201);
+        Cache::forget('clientes');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cliente creado correctamente',
+            'data' => $cliente
+        ], 201);
     }
 
     // Ver un cliente
     public function show($id)
     {
-        return Cliente::find($id);
+        try {
+
+            $cliente = Cliente::findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'data' => $cliente
+            ], 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Cliente no encontrado'
+            ], 404);
+        }
     }
 
     // Actualizar cliente
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'correo' => 'required|email|unique:clientes,correo,' . $id,
-            'telefono' => 'required|string|max:20'
-        ]);
+        try {
 
-        $cliente = Cliente::findOrFail($id);
+            $cliente = Cliente::findOrFail($id);
 
-        $cliente->update($request->all());
+            $validated = $request->validate([
+                'nombre' => 'required|string|max:255',
+                'apellido' => 'required|string|max:255',
+                'correo' => 'required|email|unique:clientes,correo,' . $id,
+                'telefono' => 'required|string|max:20'
+            ]);
 
-        return response()->json($cliente);
+            $cliente->update($validated);
+
+            Cache::forget('clientes');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cliente actualizado correctamente',
+                'data' => $cliente
+            ], 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar cliente'
+            ], 500);
+        }
     }
 
     // Eliminar cliente
     public function destroy($id)
     {
-        Cliente::destroy($id);
+        try {
 
-        return response()->json(['message' => 'Cliente eliminado']);
+            $cliente = Cliente::findOrFail($id);
+
+            $cliente->delete();
+
+            Cache::forget('clientes');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cliente eliminado correctamente'
+            ], 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar cliente'
+            ], 500);
+        }
     }
 }

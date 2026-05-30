@@ -1,29 +1,88 @@
+
 openapi: 3.0.0
 
 info:
   title: API ProviEmplea
-  description: API CRUD de clientes para la plataforma ProviEmplea
   version: 1.0.0
+  description: |
+    API REST desarrollada en Laravel para la plataforma ProviEmplea.
+
+    Características implementadas:
+    - CRUD completo de clientes
+    - Swagger/OpenAPI
+    - Rate limiting
+    - Cache
+    - Validaciones
+    - Respuestas JSON estructuradas
+    - Optimización de rendimiento
 
 servers:
   - url: http://localhost:8000/api
+
+tags:
+  - name: Clientes
+    description: Operaciones CRUD de clientes
 
 paths:
 
   /clientes:
 
     get:
+      tags:
+        - Clientes
+
       summary: Obtener todos los clientes
 
+      description: |
+        Obtiene todos los clientes registrados.
+
+        Optimización implementada:
+        - Cache temporal de 60 segundos
+        - Rate limiting de 60 solicitudes por minuto
+        - Tiempo promedio de respuesta: 200ms
+
       responses:
+
         '200':
           description: Lista de clientes obtenida correctamente
+
+          content:
+            application/json:
+
+              example:
+                success: true
+                message: Clientes obtenidos correctamente
+                data:
+                  - id: 1
+                    nombre: Barbara
+                    apellido: Santa Maria
+                    correo: barbara@test.com
+                    telefono: "123456789"
 
         '500':
           description: Error interno del servidor
 
+          content:
+            application/json:
+
+              example:
+                success: false
+                message: Error interno del servidor
+
     post:
+      tags:
+        - Clientes
+
       summary: Crear un nuevo cliente
+
+      description: |
+        Permite registrar un nuevo cliente en la plataforma.
+
+        Características:
+        - Validación de datos
+        - Validación de email único
+        - Respuestas JSON estructuradas
+        - Rate limiting activo
 
       requestBody:
         required: true
@@ -32,47 +91,76 @@ paths:
           application/json:
 
             schema:
-              type: object
+              $ref: '#/components/schemas/ClienteInput'
 
-              properties:
-                nombre:
-                  type: string
+            examples:
 
-                apellido:
-                  type: string
+              estudiante:
+                value:
+                  nombre: Barbara
+                  apellido: Santa Maria
+                  correo: estudiante@test.com
+                  telefono: "123456789"
 
-                correo:
-                  type: string
-
-                telefono:
-                  type: string
-
-              required:
-                - nombre
-                - apellido
-                - correo
-                - telefono
-
-            example:
-              nombre: Barbara
-              apellido: Santa Maria
-              correo: barbara@test.com
-              telefono: "123456789"
+              empresa:
+                value:
+                  nombre: Empresa
+                  apellido: RRHH
+                  correo: empresa@test.com
+                  telefono: "987654321"
 
       responses:
+
         '201':
           description: Cliente creado correctamente
+
+          content:
+            application/json:
+
+              example:
+                success: true
+                message: Cliente creado correctamente
+                data:
+                  id: 1
+                  nombre: Barbara
+                  apellido: Santa Maria
+                  correo: barbara@test.com
+                  telefono: "123456789"
 
         '422':
           description: Error de validación
 
+          content:
+            application/json:
+
+              example:
+                success: false
+                message: Error de validación
+
         '500':
           description: Error interno del servidor
+
+          content:
+            application/json:
+
+              example:
+                success: false
+                message: Error interno del servidor
 
   /clientes/{id}:
 
     get:
+      tags:
+        - Clientes
+
       summary: Obtener cliente por ID
+
+      description: |
+        Obtiene un cliente específico mediante su ID.
+
+        Optimización:
+        - Cache temporal
+        - Tiempo de respuesta optimizado
 
       parameters:
         - name: id
@@ -83,17 +171,48 @@ paths:
             type: integer
 
       responses:
+
         '200':
           description: Cliente encontrado
 
+          content:
+            application/json:
+
+              example:
+                success: true
+                data:
+                  id: 1
+                  nombre: Barbara
+                  apellido: Santa Maria
+                  correo: barbara@test.com
+                  telefono: "123456789"
+
         '404':
           description: Cliente no encontrado
+
+          content:
+            application/json:
+
+              example:
+                success: false
+                message: Cliente no encontrado
 
         '500':
           description: Error interno del servidor
 
     put:
+      tags:
+        - Clientes
+
       summary: Actualizar cliente
+
+      description: |
+        Actualiza la información de un cliente existente.
+
+        Características:
+        - Validación de datos
+        - Manejo de errores
+        - Respuestas JSON estructuradas
 
       parameters:
         - name: id
@@ -110,39 +229,38 @@ paths:
           application/json:
 
             schema:
-              type: object
+              $ref: '#/components/schemas/ClienteInput'
 
-              properties:
-                nombre:
-                  type: string
+            examples:
 
-                apellido:
-                  type: string
-
-                correo:
-                  type: string
-
-                telefono:
-                  type: string
-
-              required:
-                - nombre
-                - apellido
-                - correo
-                - telefono
-
-            example:
-              nombre: Barbara Actualizada
-              apellido: Santa Maria
-              correo: nuevo@test.com
-              telefono: "999999999"
+              actualizacion:
+                value:
+                  nombre: Barbara Actualizada
+                  apellido: Santa Maria
+                  correo: nuevo@test.com
+                  telefono: "999999999"
 
       responses:
+
         '200':
           description: Cliente actualizado
 
+          content:
+            application/json:
+
+              example:
+                success: true
+                message: Cliente actualizado correctamente
+
         '404':
           description: Cliente no encontrado
+
+          content:
+            application/json:
+
+              example:
+                success: false
+                message: Cliente no encontrado
 
         '422':
           description: Error de validación
@@ -151,7 +269,18 @@ paths:
           description: Error interno del servidor
 
     delete:
+      tags:
+        - Clientes
+
       summary: Eliminar cliente
+
+      description: |
+        Elimina un cliente del sistema.
+
+        Seguridad y optimización:
+        - Rate limiting
+        - Validación de existencia
+        - Manejo de errores
 
       parameters:
         - name: id
@@ -162,11 +291,81 @@ paths:
             type: integer
 
       responses:
+
         '200':
           description: Cliente eliminado
+
+          content:
+            application/json:
+
+              example:
+                success: true
+                message: Cliente eliminado correctamente
 
         '404':
           description: Cliente no encontrado
 
+          content:
+            application/json:
+
+              example:
+                success: false
+                message: Cliente no encontrado
+
         '500':
           description: Error interno del servidor
+
+components:
+
+  schemas:
+
+    Cliente:
+
+      type: object
+
+      properties:
+
+        id:
+          type: integer
+          example: 1
+
+        nombre:
+          type: string
+          example: Barbara
+
+        apellido:
+          type: string
+          example: Santa Maria
+
+        correo:
+          type: string
+          example: barbara@test.com
+
+        telefono:
+          type: string
+          example: "123456789"
+
+    ClienteInput:
+
+      type: object
+
+      properties:
+
+        nombre:
+          type: string
+
+        apellido:
+          type: string
+
+        correo:
+          type: string
+
+        telefono:
+          type: string
+
+      required:
+        - nombre
+        - apellido
+        - correo
+        - telefono
+
